@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ระบบลงตารางเวรเภสัชกร (Masterpiece v13.3 - Fixed)</title>
+    <title>ระบบลงตารางเวรเภสัชกร (Masterpiece v13.4 - Stable)</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -13,40 +13,28 @@
     <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.11/index.global.min.js'></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
     <style>
-        /* Design Language Restoration */
         * { font-family: 'Sarabun', sans-serif !important; -webkit-tap-highlight-color: transparent; }
         body { font-family: 'Sarabun', sans-serif; background-color: #f0f9ff; box-sizing: border-box; }
-        
         .dashboard-card { transition: all 0.3s ease; }
         .dashboard-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
-        
         .tab-btn { transition: all 0.3s ease; }
         .tab-active { color: #2563eb; border-bottom: 2px solid #2563eb; font-weight: 600; background-color: #eff6ff; }
         .tab-inactive { color: #64748b; border-bottom: 2px solid transparent; }
-        
-        /* Loading Spinner */
         .loading-spinner { border: 4px solid #f3f3f3; border-top: 4px solid #2563eb; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
         .fade-in { animation: fadeIn 0.4s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* Calendar Colors */
         .fc-event-morning { background-color: #f97316 !important; border-color: #ea580c !important; }
         .fc-event-afternoon { background-color: #0ea5e9 !important; border-color: #0284c7 !important; }
         .fc-event-night { background-color: #1e3a8a !important; border-color: #1e40af !important; }
         .fc-event-holiday { background-color: #ef4444 !important; border-color: #dc2626 !important; }
-        
-        /* Print Styles */
         @media print {
             body > *:not(#printArea) { display: none !important; }
             #printArea { display: block !important; position: absolute; top: 0; left: 0; width: 100%; background: white; padding: 0; margin: 0; }
             @page { size: A4; margin: 1.5cm; }
         }
-        
         .hide-scrollbar::-webkit-scrollbar { display: none; }
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -92,7 +80,7 @@
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
                         </div>
                         <div>
-                             <h1 class="text-lg font-bold text-gray-900 leading-tight">Masterpiece v13.3</h1>
+                             <h1 class="text-lg font-bold text-gray-900 leading-tight">Masterpiece v13.4</h1>
                              <div id="userDisplay" class="text-xs text-gray-500">Guest User</div>
                         </div>
                     </div>
@@ -110,7 +98,6 @@
         </header>
 
         <main class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8 space-y-6">
-
             <div id="dashboardTab" class="tab-content fade-in">
                 <div class="flex flex-col sm:flex-row justify-between items-center mb-6 bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
                     <h2 class="text-lg font-bold text-gray-700 flex items-center gap-2 mb-2 sm:mb-0">
@@ -165,7 +152,6 @@
                             ยอดเงินค่าเวรที่คาดว่าจะได้รับ (Estimated)
                         </div>
                         <div class="text-5xl sm:text-6xl font-bold mb-8 tracking-tight drop-shadow-md">฿ <span id="myEstPay">0</span></div>
-                        
                         <div class="grid grid-cols-2 gap-4 sm:gap-6">
                             <div class="bg-white/10 p-4 rounded-xl backdrop-blur-sm border border-white/10">
                                 <div class="text-xs text-blue-100 opacity-80 mb-1">จำนวนเวรสะสม</div>
@@ -194,15 +180,11 @@
                         <svg class="w-5 h-5 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
                         กรุณากรอกข้อมูลให้ตรงกับตารางเวรจริง (Paper) เพื่อความถูกต้องของการเบิกจ่าย
                     </p>
-                    
                     <div class="mb-6">
                         <label class="block text-sm font-medium text-gray-700 mb-2">เลือกเภสัชกร</label>
                         <select id="schedUser" class="w-full p-3 border border-gray-300 rounded-lg bg-gray-50 focus:ring-2 focus:ring-blue-500 outline-none font-medium text-gray-700 transition"></select>
                     </div>
-
-                    <div id="schedRows" class="space-y-3 max-h-[50vh] overflow-y-auto pr-2 mb-6 custom-scrollbar">
-                        </div>
-
+                    <div id="schedRows" class="space-y-3 max-h-[50vh] overflow-y-auto pr-2 mb-6 custom-scrollbar"></div>
                     <div class="grid md:grid-cols-2 gap-4">
                         <button onclick="addSchedRow()" class="py-3 border-2 border-gray-200 rounded-xl text-gray-600 hover:border-blue-500 hover:text-blue-600 font-medium flex items-center justify-center gap-2 transition hover:bg-gray-50">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
@@ -262,7 +244,6 @@
                             <p class="text-sm text-red-400 mt-1 font-medium">Paper is Truth: กรุณากรอกตัวเลขจากกระดาษเพื่อตรวจสอบความถูกต้อง</p>
                         </div>
                     </div>
-
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-gray-500 uppercase bg-red-50">
@@ -273,8 +254,7 @@
                                     <th class="px-6 py-4 text-center rounded-tr-lg font-bold">Diff</th>
                                 </tr>
                             </thead>
-                            <tbody id="auditTableBody" class="divide-y divide-red-100">
-                                </tbody>
+                            <tbody id="auditTableBody" class="divide-y divide-red-100"></tbody>
                         </table>
                     </div>
                 </div>
@@ -305,7 +285,6 @@
                      </div>
                 </div>
             </div>
-
         </main>
     </div>
 
@@ -314,7 +293,6 @@
             <h1 class="text-2xl font-bold">ใบลงเวลาปฏิบัติงานเภสัชกรรม</h1>
             <h2 class="text-lg font-medium" id="printHeader">ประจำเดือน...</h2>
         </div>
-        
         <table class="w-full border-collapse border border-black text-sm mb-8">
             <thead>
                 <tr class="bg-gray-100">
@@ -335,7 +313,6 @@
                 </tr>
             </tfoot>
         </table>
-
         <div class="flex justify-between mt-20 px-12">
             <div class="text-center">
                 <p>ลงชื่อ................................................ผู้ส่งข้อมูล</p>
@@ -352,8 +329,8 @@
 
     <script>
         // --- CONFIG ---
-        // [IMPORTANT] เปลี่ยน URL นี้เป็น URL จากการ Deploy ของคุณ
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyYLDCo0XWS7lX941uzV4B3heDgZX4PLCUNG19JLURPdYUj79F4sndbMersb9caT2ma/exec'; 
+        // [IMPORTANT] เปลี่ยน URL ตรงนี้เป็น Web App URL ใหม่ที่คุณจะได้จากการ Deploy ในขั้นตอนถัดไป
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzJ4WnrwwxPMum1zbkuZQ71LpKdwxqHIwb-q97C10OvLL8YfddRjivP7XgddRaVwbwi/exec'; 
 
         // --- GLOBAL STATE ---
         let currentUser = null;
@@ -364,18 +341,17 @@
 
         // --- INIT ---
         window.onload = () => {
-            const saved = localStorage.getItem('ph_user_v133'); // Changed key to match version
+            const saved = localStorage.getItem('ph_user_v134');
             if(saved) {
                 currentUser = JSON.parse(saved);
                 initApp();
             }
-            // Set Default Month to Current
             const d = new Date();
             document.getElementById('dashMonth').value = `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
         };
 
         async function login(e) {
-            e?.preventDefault(); // [FIX] Prevent default form submission
+            e?.preventDefault();
             const id = document.getElementById('uId').value;
             const pass = document.getElementById('uPass').value;
             
@@ -388,8 +364,8 @@
             try {
                 const res = await api('login', {userId: id, password: pass});
                 if(res.success) {
-                    currentUser = res.user; // User object now includes correct role
-                    localStorage.setItem('ph_user_v133', JSON.stringify(currentUser));s
+                    currentUser = res.user;
+                    localStorage.setItem('ph_user_v134', JSON.stringify(currentUser));
                     initApp();
                 } else alert(res.message);
             } catch(err) { alert(err.message); }
@@ -397,7 +373,7 @@
         }
 
         function doLogout() {
-            localStorage.removeItem('ph_user_v133');
+            localStorage.removeItem('ph_user_v134');
             location.reload();
         }
 
@@ -406,7 +382,6 @@
             document.getElementById('mainApp').classList.remove('hidden');
             document.getElementById('userDisplay').innerText = `${currentUser.name} (${currentUser.role})`;
 
-            // Admin Logic
             if(currentUser.role === 'admin') {
                 document.getElementById('auditTabBtn').classList.remove('hidden');
                 document.getElementById('manageTabBtn').classList.remove('hidden');
@@ -416,20 +391,17 @@
             toggleLoad(true);
             await loadData();
             
-            // Render All Components
             renderDashboard();
             initCalendar();
             renderMyShifts();
-            addSchedRow(); // Add first empty row
+            addSchedRow();
             
-            // User Specific logic for Sched Input
             const sel = document.getElementById('schedUser');
             sel.innerHTML = '';
             
             if(globalData && globalData.pharmacists) {
                 globalData.pharmacists.forEach(p => sel.add(new Option(p.name, p.name)));
                 if(currentUser.role !== 'admin') {
-                    // Auto select user if exists
                     const exists = globalData.pharmacists.some(p => p.name === currentUser.name);
                     if(exists) {
                         sel.value = currentUser.name;
@@ -451,31 +423,25 @@
             }
         }
 
-        // --- FEATURE 1: DASHBOARD ---
+        // --- DASHBOARD ---
         function renderDashboard() {
-            const m = document.getElementById('dashMonth').value; // YYYY-MM
+            const m = document.getElementById('dashMonth').value;
             if(!globalData) return;
             const scheds = globalData.schedules.filter(s => s.date.startsWith(m));
             const target = globalData.auditTargets[m] || 0;
 
-            // 1. Personal
             const myData = scheds.filter(s => s.pharmacist === currentUser.name);
             const myTotal = myData.reduce((sum, s) => sum + (parseInt(s.pay)||0), 0);
             document.getElementById('myEstPay').innerText = myTotal.toLocaleString();
             document.getElementById('myShiftCount').innerText = myData.length;
 
-            // 2. Admin Charts
             if(currentUser.role === 'admin') {
                 document.getElementById('targetDisplay').innerText = `Target: ${target} (Click to Edit)`;
-                
-                // Submission Progress
                 const activeUsers = new Set(scheds.map(s => s.pharmacist)).size;
                 const totalUsers = globalData.pharmacists.length;
-                
                 document.getElementById('submissionText').innerText = `${activeUsers}/${totalUsers}`;
                 document.getElementById('submissionBar').style.width = `${totalUsers > 0 ? (activeUsers/totalUsers)*100 : 0}%`;
                 
-                // Doughnut Chart
                 const ctxSub = document.getElementById('submissionChart');
                 if(subChart) subChart.destroy(); 
                 subChart = new Chart(ctxSub, {
@@ -487,11 +453,9 @@
                     options: { plugins: { legend: {display: false} }, cutout: '70%', maintainAspectRatio: false }
                 });
 
-                // Top Spender Bar Chart
                 const incomeMap = {};
                 scheds.forEach(s => incomeMap[s.pharmacist] = (incomeMap[s.pharmacist]||0) + parseInt(s.pay));
                 const sorted = Object.entries(incomeMap).sort((a,b) => b[1]-a[1]).slice(0, 5);
-                
                 const ctxTop = document.getElementById('topSpenderChart');
                 if(topChart) topChart.destroy(); 
                 topChart = new Chart(ctxTop, {
@@ -513,13 +477,11 @@
                         maintainAspectRatio: false
                     }
                 });
-
-                // Update Audit Table as well
                 renderAuditTable(scheds);
             }
         }
 
-        // --- FEATURE 2: INPUT SCHEDULE ---
+        // --- SCHEDULE ---
         function addSchedRow() {
             const div = document.createElement('div');
             div.className = "flex gap-2 fade-in";
@@ -550,13 +512,11 @@
                 const p = r.querySelector('[name="pay"]').value;
                 if(d && s) items.push({ date: d, shift: s, pay: p });
             });
-
             if(items.length === 0) return alert('กรุณากรอกข้อมูลอย่างน้อย 1 แถว');
 
             toggleLoad(true);
             const res = await api('saveBatch', { pharmacist: user, items, userId: currentUser.userId });
             toggleLoad(false);
-            
             if(res.success) {
                 alert('บันทึกข้อมูลสำเร็จ');
                 document.getElementById('schedRows').innerHTML = '';
@@ -568,12 +528,11 @@
             } else alert(res.message);
         }
 
-        // --- FEATURE 3: MY SHIFTS TABLE ---
+        // --- MY SHIFTS ---
         function renderMyShifts() {
             const m = document.getElementById('dashMonth').value;
             const tbody = document.getElementById('myShiftsBody');
             tbody.innerHTML = '';
-            
             const myData = globalData.schedules.filter(s => s.pharmacist === currentUser.name && s.date.startsWith(m));
             
             if(myData.length === 0) {
@@ -610,7 +569,7 @@
             }
         }
 
-        // --- FEATURE 4: CALENDAR ---
+        // --- CALENDAR & AUDIT ---
         function initCalendar() {
             const el = document.getElementById('calendar');
             calendar = new FullCalendar.Calendar(el, {
@@ -619,21 +578,16 @@
                 height: '100%',
                 headerToolbar: { left: 'prev', center: 'title', right: 'next' },
                 events: globalData.schedules.map(s => {
-                    let c = 'fc-event-holiday'; // Red Default
+                    let c = 'fc-event-holiday';
                     if(s.shift.includes('เช้า')) c = 'fc-event-morning';
                     else if(s.shift.includes('บ่าย')) c = 'fc-event-afternoon';
                     else if(s.shift.includes('ดึก')) c = 'fc-event-night';
-                    return {
-                        title: `${s.pharmacist} (${s.shift})`,
-                        start: s.date,
-                        className: c
-                    };
+                    return { title: `${s.pharmacist} (${s.shift})`, start: s.date, className: c };
                 })
             });
             calendar.render();
         }
 
-        // --- FEATURE 5: AUDIT MODE ---
         function renderAuditTable(scheds) {
             const tbody = document.getElementById('auditTableBody');
             tbody.innerHTML = '';
@@ -662,14 +616,9 @@
                 const paper = parseInt(input.value) || 0;
                 const diff = paper - sys;
                 const cell = input.parentElement.nextElementSibling;
-                
-                if(diff === 0) {
-                    cell.innerHTML = '<span class="text-green-500 flex justify-center items-center gap-1 font-bold">✔ ตรงกัน</span>';
-                } else if (diff > 0) {
-                    cell.innerHTML = `<span class="text-red-500 font-bold">ขาด ${diff} (ในคอมน้อยกว่า)</span>`;
-                } else {
-                    cell.innerHTML = `<span class="text-orange-500 font-bold">เกิน ${Math.abs(diff)} (ในคอมเกิน)</span>`;
-                }
+                if(diff === 0) cell.innerHTML = '<span class="text-green-500 flex justify-center items-center gap-1 font-bold">✔ ตรงกัน</span>';
+                else if (diff > 0) cell.innerHTML = `<span class="text-red-500 font-bold">ขาด ${diff} (ในคอมน้อยกว่า)</span>`;
+                else cell.innerHTML = `<span class="text-orange-500 font-bold">เกิน ${Math.abs(diff)} (ในคอมเกิน)</span>`;
             }
         };
 
@@ -683,18 +632,16 @@
              }
         }
 
-        // --- FEATURE 6: PRINT REPORT ---
+        // --- PRINT ---
         function printReport() {
             const m = document.getElementById('dashMonth').value;
             const scheds = globalData.schedules.filter(s => s.date.startsWith(m));
             if(scheds.length === 0) return alert('ไม่มีข้อมูลสำหรับพิมพ์ในเดือนนี้');
 
-            // Format Header
             const dateObj = new Date(m + "-01");
             const thaiMonth = dateObj.toLocaleDateString('th-TH', { month: 'long', year: 'numeric' });
             document.getElementById('printHeader').innerText = `ประจำเดือน ${thaiMonth}`;
 
-            // Body
             const tbody = document.getElementById('printBody');
             tbody.innerHTML = scheds.map((s, i) => `
                 <tr>
@@ -706,22 +653,14 @@
                     <td class="border border-black p-2"></td>
                 </tr>
             `).join('');
-
-            // Footer Total
             const total = scheds.reduce((sum, s) => sum + (parseInt(s.pay)||0), 0);
             document.getElementById('printTotal').innerText = total.toLocaleString() + " บาท";
-
             window.print();
         }
 
-        // --- MANAGE ACTIONS ---
         async function addPh(e) {
             e.preventDefault();
-            const body = {
-                name: document.getElementById('newPhName').value,
-                userId: document.getElementById('newPhId').value,
-                password: document.getElementById('newPhPass').value
-            };
+            const body = { name: document.getElementById('newPhName').value, userId: document.getElementById('newPhId').value, password: document.getElementById('newPhPass').value };
             toggleLoad(true);
             const res = await api('addPharmacist', body);
             toggleLoad(false);
@@ -730,19 +669,13 @@
 
         async function addSh(e) {
             e.preventDefault();
-            const body = {
-                name: document.getElementById('newShName').value,
-                abbrev: document.getElementById('newShAbbrev').value,
-                shortName: document.getElementById('newShShort').value,
-                pay: document.getElementById('newShPay').value
-            };
+            const body = { name: document.getElementById('newShName').value, abbrev: document.getElementById('newShAbbrev').value, shortName: document.getElementById('newShShort').value, pay: document.getElementById('newShPay').value };
             toggleLoad(true);
             const res = await api('addShift', body);
             toggleLoad(false);
             if(res.success) { alert('เพิ่มสำเร็จ'); e.target.reset(); loadData(); addSchedRow(); } else alert(res.message);
         }
 
-        // --- UTILS ---
         function setTab(t) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
             document.getElementById(t+'Tab').classList.remove('hidden');
@@ -762,7 +695,6 @@
             const res = await fetch(SCRIPT_URL, {method: 'POST', body: JSON.stringify({action: act, ...body})});
             return await res.json();
         }
-
     </script>
 </body>
 </html>
