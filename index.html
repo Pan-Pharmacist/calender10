@@ -51,10 +51,11 @@
 
         /* (New v7.0) CSS สำหรับการ Print */
         @media print {
-            body * { visibility: hidden; }
-            #printSection, #printSection * { visibility: visible; }
-            #printSection { position: absolute; left: 0; top: 0; width: 100%; }
-            @page { size: A4; margin: 2cm; }
+    body * { visibility: hidden; }
+    #printSection, #printSection * { visibility: visible; }
+    /* เพิ่ม display: block !important; เพื่อบังคับให้แสดงผลทับ class="hidden" */
+    #printSection { position: absolute; left: 0; top: 0; width: 100%; display: block !important; }
+    @page { size: A4; margin: 2cm; }
         }
     </style>
 </head>
